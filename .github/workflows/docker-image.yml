@@ -34,7 +34,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: melissaesgi/devops-back-esgi:${{ inputs.image_version }
+        tags: melissaesgi/devops-back-esgi:${{ inputs.image_version }}
 
     - name: Push Docker image with latest version
       uses: docker/build-push-action@v5
