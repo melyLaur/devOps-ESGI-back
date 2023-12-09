@@ -1,15 +1,11 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-inputs:
-  image_version:
-    description: 'Image version'
-    required: true
+  workflow_dispatch:
+    inputs:
+      image_version:
+        description: 'Image version'
+        required: true
 
 jobs:
 
