@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  build_image_and_deploy_image:
+  build_image_and_deploy_image_on_prod:
 
     runs-on: ubuntu-latest
 
