@@ -10,5 +10,5 @@ class YourTestCase(unittest.TestCase):
         self.assertFalse(False, "Test => OK")
 
 
-    #def test_should_not_pass_false_is_not_equal_true(self):
-       #self.assertTrue(False, "Test => Not OK")        
+    def test_should_not_pass_false_is_not_equal_true(self):
+       self.assertTrue(False, "Test => Not OK")        
