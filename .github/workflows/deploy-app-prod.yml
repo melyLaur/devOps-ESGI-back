@@ -1,4 +1,4 @@
-name: deploy app in prod
+name: Deploy_app_prod
 
 on:
   workflow_dispatch:
