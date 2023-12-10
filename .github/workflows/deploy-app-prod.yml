@@ -27,6 +27,7 @@ jobs:
           prerelease: false
 
   build_image_and_deploy_image_on_docker_hub:
+    needs: create_release  # Failed if create_release failed
     runs-on: ubuntu-latest
 
     steps:
