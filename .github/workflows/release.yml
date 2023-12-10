@@ -22,5 +22,7 @@ jobs:
         with:
           tag_name: v.${{ inputs.version_project }}
           release_name: Release v.${{ inputs.version_project }}
+          body: |
+            Test
           draft: false
           prerelease: false
