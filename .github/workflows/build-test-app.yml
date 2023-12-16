@@ -37,12 +37,10 @@ jobs:
         pip install flake8 flake8-json ruff
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-        flake8 . --format=json --output-file=flake8-report.json
         ruff --output-format=github .
-      continue-on-error: true #  keep the workflow from failing if the linting step doesn't succeed
-
-    - run: |
         mkdir report
+        flake8 . --format=json --output-file=report/flake8-report.json
+      continue-on-error: true #  keep the workflow from failing if the linting step doesn't succeed
 
     # https://github.com/actions/upload-artifact
     - name: Upload Flake8 Report
