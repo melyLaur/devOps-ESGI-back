@@ -41,6 +41,13 @@ jobs:
         ruff --output-format=github .
       continue-on-error: true #  keep the workflow from failing if the linting step doesn't succeed
 
+    # https://github.com/actions/upload-artifact
+    - name: Upload Flake8 Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: flake8-report
+        path: flake8-report.json
+
     - name: Running Tests
       run: |
         pip install pytest
@@ -55,6 +62,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      # https://github.com/actions/download-artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: flake8-report.json
+          path: .
 
       - name: Sonar Scan
         uses: SonarSource/sonarcloud-github-action@master
