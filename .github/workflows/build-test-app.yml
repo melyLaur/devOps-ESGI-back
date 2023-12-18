@@ -36,7 +36,7 @@ jobs:
       run: |
         pip install flake8 flake8-json ruff
         mkdir report
-        flake8 . --exit-zero --max-complexity=10 --max-line-length=127 --statistics > report/flake8-report.txt
+        flake8 --format=pylint --output-file=report/flake8.txt ./
         ruff --output-format=github .
       continue-on-error: true #  keep the workflow from failing if the linting step doesn't succeed
 
