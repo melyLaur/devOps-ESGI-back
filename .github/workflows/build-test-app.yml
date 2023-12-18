@@ -7,6 +7,10 @@ on:
     branches: [ "main" ]
     types: [opened, synchronize, reopened]
 
+env:
+  DIRECTORY_REPORT: report
+  REPORT_FILE_FLAKE8: flake8.txt
+
 permissions:
   contents: read
 
@@ -35,23 +39,16 @@ jobs:
     - name: Lint with flake8
       run: |
         pip install flake8
-        mkdir report
-        flake8 --format=pylint --output-file=report/flake8.txt ./
+        mkdir $DIRECTORY_REPORT
+        flake8 --format=pylint --output-file=report/$REPORT_FILE_FLAKE8 ./
       continue-on-error: true #  keep the workflow from failing if the linting step doesn't succeed
-
-    - name: Lint with ruff
-      run: |
-        pip install ruff
-        ruff -o report/ruff.txt .
-      continue-on-error: true #  keep the workflow from failing if the linting step doesn't succeed
-
 
     # https://github.com/actions/upload-artifact
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
       with:
-        name: report
-        path: report
+        name: $DIRECTORY_REPORT
+        path: $DIRECTORY_REPORT
 
     - name: Running Tests
       run: |
@@ -60,7 +57,7 @@ jobs:
 
   sonar:
     needs: build_and_test
-    name: Sonar
+    name: sonar
     runs-on: ubuntu-latest
     steps:
       # https://github.com/actions/checkout
@@ -71,7 +68,7 @@ jobs:
       # https://github.com/actions/download-artifact
       - uses: actions/download-artifact@v4
         with:
-          name: report
+          name: $DIRECTORY_REPORT
           path: .
             
        # https://github.com/SonarSource/sonarcloud-github-action
@@ -82,4 +79,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:  
           args: >
-            -Dsonar.python.flake8.reportPaths=flake8.txt
+            -Dsonar.python.flake8.reportPaths=$REPORT_FILE_FLAKE8
