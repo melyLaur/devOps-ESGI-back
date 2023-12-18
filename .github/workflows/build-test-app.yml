@@ -47,8 +47,8 @@ jobs:
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
       with:
-        name: $DIRECTORY_REPORT
-        path: $DIRECTORY_REPORT
+        name: report
+        path: report
 
     - name: Running Tests
       run: |
@@ -68,7 +68,7 @@ jobs:
       # https://github.com/actions/download-artifact
       - uses: actions/download-artifact@v4
         with:
-          name: $DIRECTORY_REPORT
+          name: report
           path: .
             
        # https://github.com/SonarSource/sonarcloud-github-action
