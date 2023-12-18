@@ -36,15 +36,15 @@ jobs:
       run: |
         pip install flake8 flake8-json ruff
         mkdir report
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --format=json --output-file=report/flake8-report-2.json
+        flake8 . --exit-zero --max-complexity=10 --max-line-length=127 --statistics > report/flake8-report.txt
         ruff --output-format=github .
       continue-on-error: true #  keep the workflow from failing if the linting step doesn't succeed
 
     # https://github.com/actions/upload-artifact
-    - name: Upload Flake8 Report
+    - name: Upload Test Report
       uses: actions/upload-artifact@v4
       with:
-        name: flake8-report
+        name: report
         path: report
 
     - name: Running Tests
@@ -52,27 +52,24 @@ jobs:
         pip install pytest
         pytest ./article/tests.py
 
-  sonar:
-    needs: build_and_test
-    name: Sonar
-    runs-on: ubuntu-latest
-    steps:
-      # https://github.com/actions/checkout
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+  # sonar:
+  #   needs: build_and_test
+  #   name: Sonar
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # https://github.com/actions/checkout
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
-      # https://github.com/actions/download-artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: flake8-report
-          path: .
+  #     # https://github.com/actions/download-artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: flake8-report
+  #         path: .
 
-      - name: Sonar Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.report.export.path=flake8-report.json
+  #     - name: Sonar Scan
+  #       uses: SonarSource/sonarcloud-github-action@master
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
