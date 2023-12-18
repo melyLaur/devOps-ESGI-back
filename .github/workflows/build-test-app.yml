@@ -41,8 +41,9 @@ jobs:
       continue-on-error: true #  keep the workflow from failing if the linting step doesn't succeed
 
     - name: Debug
-      run: ls -R
-      run: cat report/flake8-report-2.json
+      run: |
+        ls -R
+        cat report/flake8-report-2.json
 
 
     # https://github.com/actions/upload-artifact
