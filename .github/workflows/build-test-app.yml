@@ -34,7 +34,7 @@ jobs:
 
     - name: Lint
       run: |
-        pip install flake8 flake8-json ruff
+        pip install flake8 ruff
         mkdir report
         flake8 --format=pylint --output-file=report/flake8.txt ./
         ruff -o report/ruff.txt -- --format=pylint .
@@ -74,3 +74,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         args: >
+            -Dsonar.python.flake8.reportPaths=flake8.txt
