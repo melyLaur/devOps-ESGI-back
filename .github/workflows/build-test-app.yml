@@ -42,6 +42,7 @@ jobs:
 
     - name: Debug
       run: ls -R
+      run: cat report/flake8-report-2.json
 
 
     # https://github.com/actions/upload-artifact
