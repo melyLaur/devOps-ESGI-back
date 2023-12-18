@@ -79,4 +79,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:  
           args: >
-            -Dsonar.python.flake8.reportPaths=$REPORT_FILE_FLAKE8
+            -Dsonar.python.flake8.reportPaths=flake8.txt
