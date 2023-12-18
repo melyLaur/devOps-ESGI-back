@@ -37,7 +37,7 @@ jobs:
         pip install flake8 ruff
         mkdir report
         flake8 --format=pylint --output-file=report/flake8.txt ./
-        ruff -o report/ruff.txt -- --format=pylint .
+        ruff -o report/ruff.txt .
       continue-on-error: true #  keep the workflow from failing if the linting step doesn't succeed
 
     # https://github.com/actions/upload-artifact
