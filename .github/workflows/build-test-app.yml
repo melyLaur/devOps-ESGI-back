@@ -37,7 +37,7 @@ jobs:
         pip install flake8 flake8-json ruff
         mkdir report
         flake8 --format=pylint --output-file=report/flake8.txt ./
-        ruff --output-format=github .
+        ruff -o report/ruff.txt -- --format=pylint .
       continue-on-error: true #  keep the workflow from failing if the linting step doesn't succeed
 
     # https://github.com/actions/upload-artifact
@@ -67,11 +67,8 @@ jobs:
         with:
           name: report
           path: .
-
-      - name: Degub
-        run: ls -l
             
-       #https://github.com/SonarSource/sonarcloud-github-action
+       # https://github.com/SonarSource/sonarcloud-github-action
       - name: Sonar Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
