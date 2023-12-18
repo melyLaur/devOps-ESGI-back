@@ -42,7 +42,6 @@ jobs:
 
     - name: Debug
       run: |
-        ls -R
         cat report/flake8-report-2.json
 
 
