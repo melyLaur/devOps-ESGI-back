@@ -1,0 +1,24 @@
+name: Pipeline_deploy_back_python_prod_2
+
+on:
+  workflow_dispatch: true
+
+jobs:
+  deploy_kube:
+    runs-on: ubuntu-latest
+    steps:
+    # https://github.com/actions/checkout
+      - name: Init Checkout
+        uses: actions/checkout@v4
+
+      - name: Install kube
+        run: |
+          sudo apt-get update && sudo apt-get install -y apt-transport-https
+          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+          echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+          sudo apt-get update && sudo apt-get install -y kubectl
+
+      - name: Check installed packages of kube    
+        run : kubectl version --output=yaml 
+
+
