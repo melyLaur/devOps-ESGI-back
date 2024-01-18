@@ -1,7 +1,11 @@
 name: Pipeline_deploy_back_python_prod_2
 
 on:
-  workflow_dispatch: true
+  workflow_dispatch:
+    inputs:
+      number_version_project:
+        description: 'Project number'
+        required: false
 
 jobs:
   deploy_kube:
