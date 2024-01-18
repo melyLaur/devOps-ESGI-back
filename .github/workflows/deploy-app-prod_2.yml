@@ -10,7 +10,7 @@ jobs:
     env:
       KUBE_NAMESPACE: "4al2-the-avengers"
       KUBE_CONFIG_FILENAME: "kubeconfig.yaml"
-      KUBE_FILE_DEPLOYMENT: "./kube/back-devops-deployment.yaml"
+      KUBE_FILE_DEPLOYMENT: "./kube/."
 
     steps:
     # https://github.com/actions/checkout
@@ -31,11 +31,11 @@ jobs:
         run : echo "${{ secrets.KUBE_CONFIG }}" > ${{ env.KUBE_CONFIG_FILENAME }}
 
       - name: Deploy
-        run : kubectl apply -f ${{ env.KUBE_FILE_DEPLOYMENT }} --kubeconfig=${{ env.KUBE_CONFIG_FILENAME }} -n ${{ env.KUBE_NAMESPACE }}
+        run : kubectl apply -k ${{ env.KUBE_FILE_DEPLOYMENT }} --kubeconfig=${{ env.KUBE_CONFIG_FILENAME }} -n ${{ env.KUBE_NAMESPACE }}
 
       - name: If error, delete resources
         if: ${{ failure() }}
-        run: kubectl delete -f ${{ env.KUBE_FILE_DEPLOYMENT }} --kubeconfig=${{ env.KUBE_CONFIG_FILENAME }} -n ${{ env.KUBE_NAMESPACE }}
+        run: kubectl delete -k ${{ env.KUBE_FILE_DEPLOYMENT }} --kubeconfig=${{ env.KUBE_CONFIG_FILENAME }} -n ${{ env.KUBE_NAMESPACE }}
 
       - name: Verify Deployment Status
         run: kubectl get pods --kubeconfig=${{ env.KUBE_CONFIG_FILENAME }} -n ${{ env.KUBE_NAMESPACE }}
