@@ -1,3 +1,21 @@
+secretGenerator:
+  - name: postgresql-pass
+    literals:
+      - password=db-password
+  - name: database-user
+    literals:
+      - user=db-devops-user
+  - name: database-name
+    literals:
+      - name=db-devops
+  - name: database-port
+    literals:
+      - port="5432"
+  - name: database-host
+    literals:
+      - host=db-devops-service
+
+
 apiVersion: v1
 kind: Service
 metadata:
