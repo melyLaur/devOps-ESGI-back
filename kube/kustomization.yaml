@@ -21,4 +21,3 @@ secretGenerator:
 
 resources:
   - db-devops-deployment.yaml
-  - back-devops-deployment.yaml
