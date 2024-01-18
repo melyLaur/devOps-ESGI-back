@@ -17,5 +17,5 @@ secretGenerator:
   
 
 resources:
-  - devOps-ESGI-back/db-devops-deployment.yaml
-  - devOps-ESGI-back/back-devops-deployment.yaml
+  - ./db-devops-deployment.yaml
+  - ./back-devops-deployment.yaml
