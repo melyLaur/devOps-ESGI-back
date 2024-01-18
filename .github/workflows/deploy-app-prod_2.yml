@@ -29,6 +29,10 @@ jobs:
         run : echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
 
       - name: Deploy
-        run : kubectl apply -f ./kube/. --kubeconfig=kubeconfig.yaml -n 4al2-the-avengers --validate=false
+        run : kubectl apply -f ./kube/. --kubeconfig=kubeconfig.yaml -n 4al2-the-avengers
+
+      - name: If error, delete resources
+        if: ${{ failure() }}
+        run: kubectl delete -f ./kube/. --kubeconfig=kubeconfig.yaml -n 4al2-the-avengers
 
 
