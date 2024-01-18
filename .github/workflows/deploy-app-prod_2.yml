@@ -22,10 +22,13 @@ jobs:
           echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
           sudo apt-get update && sudo apt-get install -y kubectl
 
-      - name: Check installed packages of kube    
-        run : kubectl version --output=yaml
+      - name: Kube's version    
+        run : kubectl version --client
 
-      - name: Kube config
-        run : echo "kubectl ok"  
+      - name: Configure kubectl configuration
+        run : echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
+
+      - name: Deploy
+        run : kubectl apply -f ./kube/. --kubeconfig=kubeconfig.yaml
 
 
