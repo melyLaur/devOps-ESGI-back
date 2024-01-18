@@ -10,7 +10,7 @@ jobs:
     env:
       KUBE_NAMESPACE: "4al2-the-avengers"
       KUBE_CONFIG_FILENAME: "kubeconfig.yaml"
-      KUBE_FILE_DEPLOYMENT: "./kube/back-devops-deployment.yaml"
+      KUBE_FILE_DEPLOYMENT: "./kube/db-devops-deployment.yaml"
 
     steps:
     # https://github.com/actions/checkout
