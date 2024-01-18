@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-devops-service
+  labels:
+    app: db-devops
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+  selector:
+    app: db-devops
+    tier: db
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-devops
+  labels:
+    app: db-devops
+spec:
+  selector:
+    matchLabels:
+      app: db-devops
+      tier: db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db-devops
+        tier: db
+    spec:
+      containers:
+      - image: postgres:16.0
+        name: db-devops
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-pass
+                key: password
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: database-user
+                key: user
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: database-name
+                key: name
+          - name: DATABASE_PORT
+            valueFrom:
+              secretKeyRef:
+                name: database-port
+                key: port
+        ports:
+        - containerPort: 5432
