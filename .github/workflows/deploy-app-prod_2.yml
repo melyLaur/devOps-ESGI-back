@@ -35,4 +35,5 @@ jobs:
         if: ${{ failure() }}
         run: kubectl delete -k ./kube/. --kubeconfig=kubeconfig.yaml -n 4al2-the-avengers
 
-
+      - name: Verify Deployment Status
+        run: kubectl get pods --kubeconfig=kubeconfig.yaml -n 4al2-the-avengers
