@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-python-service
+  labels:
+    app: web-python
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+  selector:
+    app: web-python
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-python-deployment
+  labels:
+    app: web-python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-python
+  template:
+    metadata:
+      labels:
+        app: web-python
+    spec:
+      containers:
+      - name: web-python
+        image: melissaesgi/devops-back-esgi:latest
+        ports:
+        - containerPort: 8000
+        env:
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-pass
+                key: password
+          - name: DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: database-user
+                key: user
+          - name: DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: database-name
+                key: name
+          - name: DATABASE_PORT
+            valueFrom:
+              secretKeyRef:
+                name: database-port
+                key: port
+          - name: DATABASE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: database-host
+                key: host
+          - name: API_PORT
+            value: "8000"
+
+
+---
+
+
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  namespace: 4al2-the-avengers
+  labels:
+    app.kubernetes.io/component: controller
+  # Mettre un nom unique pour la classe ingress
+  name: nginx-avengers-back
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  controller: k8s.io/ingress-nginx
+
+---
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: back-ingress
+  namespace: 4al2-the-avengers
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging-cluster-issuer
+spec:
+  # Récupérer le nom de la classe ingress ici
+  ingressClassName: nginx-avengers-back
+  tls:
+    - hosts:
+        - backend.4al2.avengers.jbienvenu.fr
+      secretName: backend-deploy-tls
+  rules:
+    - host: backend.4al2.avengers.jbienvenu.fr
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: web-python-service
+                port:
+                  number: 8000
