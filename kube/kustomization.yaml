@@ -1,3 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 secretGenerator:
   - name: postgresql-pass
     literals:
@@ -17,5 +20,5 @@ secretGenerator:
   
 
 resources:
-  - ./db-devops-deployment.yaml
-  - ./back-devops-deployment.yaml
+  - db-devops-deployment.yaml
+  - back-devops-deployment.yaml
