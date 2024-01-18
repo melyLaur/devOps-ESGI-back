@@ -1,20 +1,20 @@
 secretGenerator:
   - name: postgresql-pass
     literals:
-      - password=${{ secrets.DB_PASSWORD }}
+      - password=db-password
   - name: database-user
     literals:
-      - user=${{ secrets.DB_USER }}
+      - user=db-devops-user
   - name: database-name
     literals:
-      - name=${{ secrets.DB_NAME }}
+      - name=db-devops
   - name: database-port
     literals:
-      - port=${{ secrets.DB_PORT }}
+      - port="5432"
   - name: database-host
     literals:
-      - host=${{ secrets.DB_HOST }}
-
+      - host=db-devops-service
+  
 
 resources:
   - ./db-devops-deployment.yaml
